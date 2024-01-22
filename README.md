@@ -9,4 +9,5 @@ DAG Programming Practice: Explore various DAGs within the dags/ directory, each 
 Notes: 
   - First, you need to run database migrations and create the first user account: "docker compose up airflow-init
   - Running Airflow and  start all services: "docker compose up
-  - To execute commands in dockerize Airflow use "./airflow.sh bash". 
+  - Execute commands in dockerize Airflow use: "./airflow.sh bash". 
+  - More details: https://airflow.apache.org/docs/apache-airflow/stable/howto/docker-compose/index.html
