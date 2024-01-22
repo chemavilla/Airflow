@@ -6,4 +6,7 @@ Celery Executor: Utilizing the Celery executor allows for the parallel execution
 
 DAG Programming Practice: Explore various DAGs within the dags/ directory, each demonstrating different workflow scenarios. These DAGs can serve as educational resources for those learning about Airflow and DAG-based programming.
 
-Use "./airflow.sh bash" to open a bash terminal with the container where Apache Spark is running.
+Notes: 
+  - First, you need to run database migrations and create the first user account: "docker compose up airflow-init
+  - Running Airflow and  start all services: "docker compose up
+  - To execute commands in dockerize Airflow use "./airflow.sh bash". 
