@@ -5,3 +5,5 @@ Features: Dockerized Environment: The project is configured to run seamlessly wi
 Celery Executor: Utilizing the Celery executor allows for the parallel execution of tasks defined in Airflow DAGs, enhancing performance and scalability.
 
 DAG Programming Practice: Explore various DAGs within the dags/ directory, each demonstrating different workflow scenarios. These DAGs can serve as educational resources for those learning about Airflow and DAG-based programming.
+
+Use "./airflow.sh bash" to open a bash terminal with the container where Apache Spark is running.
