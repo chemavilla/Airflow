@@ -13,9 +13,9 @@ from datetime import datetime
 with DAG(dag_id='0_test_dag',
          start_date=datetime(2024, 1, 21),
          schedule='@daily') as dag:
-    task1=EmptyOperator(task_id='task1')
-    task2=EmptyOperator(task_id='task2')
-    task3=EmptyOperator(task_id='task3')
+    task1 = EmptyOperator(task_id='task1')
+    task2 = EmptyOperator(task_id='task2')
+    task3 = EmptyOperator(task_id='task3')
 
 # Define the task dependencies
 task1 >> task2 >> task3

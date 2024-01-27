@@ -19,8 +19,6 @@ default_args = {
 def print_exec_date(execution_date, **context):
     print('Execution date = ', execution_date)
 
-
-
 with DAG(dag_id='0_operators_dag',
          default_args=default_args,
          schedule='@daily') as dag:
