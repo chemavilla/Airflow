@@ -35,4 +35,5 @@ with DAG(dag_id='test_operators',
     )
 
 # Define the dependencies between the tasks
-task1 >> task2 >> print_exec_date
+task1 >> task2
+task1 >> print_exec_date
