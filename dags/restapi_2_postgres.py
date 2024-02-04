@@ -1,6 +1,6 @@
 """
 DAG that generates random user data using RESTAPI,
-then loads it into a Postgres database.
+then loads it into the Postgres database used by apache docker compose.
 
 """
 from airflow import DAG
@@ -37,34 +37,39 @@ def gen_rnd_user():
                      aux_df["email"][aux_idx] + "','" + \
                      aux_df["phone"][aux_idx] + "')"
 
+    # Code to create the SQL file with the INSERT statements
+    # Pendent to check if is a good solution in a celeryexecuter environment
     file_path = os.environ.get("AIRFLOW_HOME") + "/dags/sql/insert_users_data.sql"
     with open(file_path, "w") as file:
-        # Write your new content here
         file.write("INSERT INTO users VALUES\n")
        
         for i in range(0, len(df)):
-            file.write(compose_value_sql(df, i) + ',\n')  # Compose rows of data for insertion
-        file.write(compose_value_sql(df, len(df)-1) + ';')
+            if i < len(df)-1:
+                file.write(compose_value_sql(df, i) + ',\n')
+            else:
+                file.write(compose_value_sql(df, i) + ';')
 
 # Connection to postgres defined in Airflow web UI Admin -> Connections
 postgress_conn = "airflow_test_conn"
 
-with DAG(dag_id="0_postgres_dag",
-         start_date=datetime(2024, 1, 26),
-         schedule="@daily") as dag:
+with DAG(dag_id="restapi_2_postgres",
+         start_date=datetime(2024, 2, 1),
+         catchup=True,
+         schedule="@daily",
+         tags=["test"]) as dag:
 
-    create_table_users = PostgresOperator(
+    create_table_users = PostgresOperator( # Create table if not exists
         task_id="create_table_users",
         postgres_conn_id=postgress_conn,
         sql="sql/create_table_users.sql"
     )
 
-    get_user_api_data = PythonOperator(
+    get_user_api_data = PythonOperator( # Get data from API
         task_id="get_user_api_data",
         python_callable=gen_rnd_user
     )
 
-    insert_users_data = PostgresOperator(
+    insert_users_data = PostgresOperator( # Insert data into table
         task_id="insert_users_data",
         postgres_conn_id=postgress_conn,
         sql="sql/insert_users_data.sql"

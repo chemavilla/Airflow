@@ -2,6 +2,8 @@
 Test Operators DAG for Airflow 
 
 This DAG serves as a test example for Airflow Operators.
+
+Old apache api is used
 '''
 from airflow import DAG
 from airflow.operators.bash import BashOperator
@@ -13,14 +15,17 @@ from datetime import datetime
 
 default_args = {
     'owner': 'airflow',
-    'start_date': datetime(2024, 1, 21),
+    'start_date': datetime(2024, 2, 1),
 }
 
 def print_exec_date(execution_date, **context):
     print('Execution date = ', execution_date)
 
-with DAG(dag_id='0_operators_dag',
+with DAG(dag_id='test_operators',
          default_args=default_args,
+         start_date=datetime(2024, 2, 1),
+         catchup=True,
+         tags=["test"],
          schedule='@daily') as dag:
     
     task1 = BashOperator(task_id='task1', bash_command='echo "Hello, world"')
