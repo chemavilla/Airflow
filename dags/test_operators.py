@@ -8,30 +8,23 @@ Old apache api is used
 from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator  
-
 from datetime import datetime
+from default_args import common_args
 
-# Define the DAG arguments
-
-default_args = {
-    'owner': 'airflow',
-    'start_date': datetime(2024, 2, 1),
-}
-
-def print_exec_date(execution_date, **context):
-    print('Execution date = ', execution_date)
 
 with DAG(dag_id='test_operators',
-         default_args=default_args,
+         schedule='@daily',
          start_date=datetime(2024, 2, 1),
-         catchup=True,
          tags=["test"],
-         schedule='@daily') as dag:
-    
+         default_args=common_args) as dag:
+
+    def _print_exec_date(execution_date, **context):
+        print('Execution date = ', execution_date)
+
     task1 = BashOperator(task_id='task1', bash_command='echo "Hello, world"')
     task2 = BashOperator(task_id='task2', bash_command='echo "Hello, Airflow"')
     
-    print_exec_date = PythonOperator(task_id="print_exec_date", python_callable=print_exec_date
+    print_exec_date = PythonOperator(task_id="print_exec_date", python_callable=_print_exec_date
     )
 
 # Define the dependencies between the tasks

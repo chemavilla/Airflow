@@ -6,8 +6,8 @@ then loads it into the Postgres database used by apache docker compose.
 from airflow import DAG
 from airflow.operators.python import PythonOperator
 from airflow.providers.postgres.operators.postgres import PostgresOperator
-
 from datetime import datetime
+from default_args import common_args
 
 def gen_rnd_user():
     """
@@ -54,9 +54,9 @@ postgress_conn = "airflow_test_conn"
 
 with DAG(dag_id="restapi_2_postgres",
          start_date=datetime(2024, 2, 1),
-         catchup=True,
          schedule="@daily",
-         tags=["test"]) as dag:
+         tags=["test"],
+         default_args=common_args) as dag:
 
     create_table_users = PostgresOperator( # Create table if not exists
         task_id="create_table_users",
@@ -64,6 +64,7 @@ with DAG(dag_id="restapi_2_postgres",
         sql="sql/create_table_users.sql"
     )
 
+    # TODO: Refactor to external tool to avoid overload the Airflow server, example Spark
     get_user_api_data = PythonOperator( # Get data from API
         task_id="get_user_api_data",
         python_callable=gen_rnd_user
