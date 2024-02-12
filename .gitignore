@@ -1,4 +1,7 @@
 /logs
-/dags/__pycache__
+/dags/__pycache__/*
 /.vscode
 /secrets
+/sql/insert*
+*.pyc
+dags/sql/insert_users_data.sql

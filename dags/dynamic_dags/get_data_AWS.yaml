@@ -1,0 +1,5 @@
+cloud: AWS
+year: 2024
+schedule: '@weekly'
+catchup: True
+source: 's3://chemavilla/Price_table.csv'
